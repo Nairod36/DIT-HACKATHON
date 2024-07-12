@@ -17,12 +17,29 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        '90': '20rem',
+        '96': '24rem',
+        '100': '28rem',
+        '114': '32rem',
+      },
+      width: {
+        '90': '20rem',
+        '96': '24rem',
+        '100': '28rem',
+        '114': '32rem',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        dark: {
+          // Put rgba(20,20,20,255) here
+          DEFAULT: "rgba(20,20,20,255)",
+          foreground: "rgba(20,20,20,255)",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
