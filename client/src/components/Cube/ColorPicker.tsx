@@ -6,37 +6,53 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import VerifyComponent from "./Verify";
 
 type IPicker = {
-  pickColor:(newColor:string)=>void
+  updateJSONColor:(color:string)=>void
 }
 
-export function PickerExample(props:IPicker) {
+export function PickerExample(props: IPicker) {
   const [background, setBackground] = useState(
     "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)"
   );
 
+  const [verification, setVerification] = useState(true);
+
   const handlePickColor = () => {
-    props.pickColor(background)
+    props.updateJSONColor(background);
+    setVerification(false);
+  };
+
+  const resetVerification = () => {
+    setVerification(false);
   }
 
   return (
-    <Card>
-      <CardContent className="p-6 space-y-4">
-        <div
-          className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
-          style={{ background }}
-        >
-          <GradientPicker
-            background={background}
-            setBackground={setBackground}
-          />
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={handlePickColor} className="w-full" size="lg">Validate</Button>
-      </CardFooter>
-    </Card>
+    <>
+      <Card>
+        <CardContent className="p-6 space-y-4">
+          <div
+            className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
+            style={{ background }}
+          >
+            <GradientPicker
+              background={background}
+              setBackground={setBackground}
+            />
+          </div>
+        </CardContent>
+        <CardFooter>
+          {verification ? (
+            <VerifyComponent resetVerification={resetVerification} />
+          ) : (
+            <Button onClick={handlePickColor} className="w-full" size="lg">
+              Validate
+            </Button>
+          )}
+        </CardFooter>
+      </Card>
+    </>
   );
 }
 
