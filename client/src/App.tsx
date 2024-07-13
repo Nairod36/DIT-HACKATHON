@@ -9,16 +9,16 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-    <Router>
-      <div className="App h-screen w-screen">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+      <Router>
+        <div className="App h-screen w-screen">
+          {/* <Header /> */}
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
     </QueryClientProvider>
   );
 };
