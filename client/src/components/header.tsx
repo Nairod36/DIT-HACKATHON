@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { Button } from "./ui/button";
+import { Button } from "./ui/button";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
 // import { Connect } from "./ConnectButton";
 
@@ -37,7 +37,7 @@ export function Header() {
             About
           </a>
         </nav>
-        <div className="ml-auto flex items-center">{/* <Connect /> */}</div>
+        <div className="ml-auto flex items-center">   </div>
       </div>
     </header>
   );
