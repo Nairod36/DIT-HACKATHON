@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
+    "@react-three/drei": "^9.108.3",
+    "@react-three/fiber": "^8.16.8",
     "@types/jest": "^29.5.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -19,12 +21,15 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.166.1"
   },
   "devDependencies": {
+    "@tanstack/react-query": "^5.51.1",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/react-query": "^1.2.9",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",

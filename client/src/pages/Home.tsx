@@ -1,12 +1,26 @@
 import React, { Suspense } from "react";
+import { ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import RowCards from "@/components/RowCards";
+import { useQuery } from "@tanstack/react-query";
+import { Product } from "@/types/product.type";
+import { ProductComponent } from "@/components/ProductComponent";
 
-export const Home = () => {
+export function Home() {
+  const { data: products } = useQuery<Product[]>({
+    queryKey: ["products"],
+    // queryFn: () =>
+    //   fetch("http://localhost:3001/api/products").then((res) => res.json()),
+  }
+);
+
   // Assurez-vous que vos composants Product et Title sont importés correctement.
 
   return (
     <>
-      <section className="flex flex-col md:flex-row items-center justify-center h-auto mt-3 bg-dark">
+      <section className="flex flex-col md:flex-row items-center justify-center h-auto mt-6 bg-dark">
         <div className="py-16 w-full md:w-1/2 lg:py-8 my-24 px-12">
           <h1 className="text-6xl font-bold tracking-tighter sm:text-6xl xl:text-8xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
             Unleash Creativity in the NFT Space
@@ -15,7 +29,12 @@ export const Home = () => {
             Join a community where art meets blockchain to craft unique digital
             masterpieces.
           </p>
-          <div className="mt-10"></div>
+          <div className="mt-10">
+            <Button variant="outline">
+              <p className="mr-2"> Join our community </p>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="overflow-hidden rounded-lg max-w-xs md:max-w-none mx-12">
@@ -27,13 +46,24 @@ export const Home = () => {
         </div>
       </section>
 
-      <section className="flex flex-col md:flex-row items-center py-12 bg-dark justify-center"></section>
+      <section className="flex flex-col md:flex-row items-center py-12 bg-dark justify-center">
+        {/* <RowCards /> */}
+      </section>
 
       <section className="flex-1 max-w-7xl container my-12 md:px-6 xl:px-1">
         <div className="font-bold text-2xl text-black mb-8 overflow-x-auto">
           Featured Collectibles
         </div>
-        <div className="flex pb-4"></div>
+        <div className="flex pb-4">
+          {products &&
+            products.slice(0, 5).map((product, index) => (
+              <div key={index} className="min-w-[15rem]">
+                <Suspense fallback={<div>Loading Cube...</div>}>
+                  <ProductComponent {...product} />
+                </Suspense>
+              </div>
+            ))}
+        </div>
       </section>
 
       <section className="w-full pt-12 md:pt-12 lg:pt-32 xl:pt-32 bg-dark pb-32">
@@ -51,7 +81,16 @@ export const Home = () => {
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-2 mx-auto pt-3">
-                <form className="flex space-x-2"></form>
+                <form className="flex space-x-2">
+                  <Input
+                    className="max-w-lg flex-1 text-white"
+                    placeholder="Enter your email"
+                    type="email"
+                  />
+                  <Button className="bg-white text-black" type="submit">
+                    Join Now
+                  </Button>
+                </form>
                 <p className="text-xs text-zinc-200 dark:text-zinc-100 pt-2">
                   Dive into the world of NFTs and collaborative design.
                   <Link
@@ -68,4 +107,4 @@ export const Home = () => {
       </section>
     </>
   );
-};
+}
