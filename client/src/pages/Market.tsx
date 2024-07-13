@@ -1,4 +1,4 @@
-import React, { useState, Fragment, Suspense } from "react";
+import React, { useState, Fragment, Suspense, useEffect } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
@@ -10,6 +10,9 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Product } from "../type/product.type";
 import { ProductComponent } from "../components/ProductComponent";
+
+// TODO delete
+import dataJSON from "../components/Cube/example.json"
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -99,9 +102,17 @@ const data = [
 ];
 
 export default function Market() {
+  const [data, setData] = useState<typeof dataJSON[]>([])
+
+  useEffect(()=> {
+    const fetchData = async()=>{
+      setData([dataJSON])
+    }
+    fetchData()
+  },[])
   const products: Array<Product> = [
     {
-      id: 1,
+      id: 0,
       address: "0x9838338383838383838383838383838383838383",
       type: "CUBE",
       name: "Cube qui tourne",
@@ -112,20 +123,7 @@ export default function Market() {
       updatedAt: new Date(),
       createdBy: "0x9838338383838383838383838383838383838383",
       updatedBy: "0x9838338383838383838383838383838383838383",
-    },
-    {
-      id: 2,
-      address: "0x9838338383838383838383838383838383838383",
-      type: "CUBE",
-      name: "Cube qui tourne",
-      price: 0.1,
-      description: "NFT Description",
-      totalFace: 8,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: "0x9838338383838383838383838383838383838383",
-      updatedBy: "0x9838338383838383838383838383838383838383",
-    },
+    }
   ];
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -411,11 +409,11 @@ export default function Market() {
                 className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3   xl:grid-cols-4 3xl:grid-cols-5
             gap-x-0 md:gap-x-2 lg:gap-x-64 gap-y-5"
               >
-                {products &&
-                  products.slice(0, 6).map((product, index) => (
+                {data.length > 0 &&
+                  data.slice(0, 6).map((product, index) => (
                     <div key={index} className="min-w-[16rem]">
                       <Suspense fallback={<div>Loading Cube...</div>}>
-                        <ProductComponent {...product} />
+                        <ProductComponent address={""} type={""} price={0} totalFace={0} createdAt={new Date()} updatedAt={new Date()} createdBy={""} updatedBy={""} {...product} />
                       </Suspense>
                     </div>
                   ))}

@@ -7,7 +7,12 @@ import gsap from "gsap";
 import EditSelector from "./EditSelector";
 import { FileUploader } from "./FileUploader";
 
-function Cube() {
+type IProps = {
+  id:number
+  editable?: boolean;
+};
+
+function Cube(props: IProps) {
   const [editMode, setEditMode] = useState(false);
   const meshRef = useRef<Group>(null);
   const [selectedFace, setSelectedFace] = useState<number | null>(null);
@@ -58,7 +63,7 @@ function Cube() {
   };
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <Canvas>
         <ambientLight intensity={Math.PI / 2} />
         <spotLight
@@ -70,7 +75,7 @@ function Cube() {
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
         <Box
-          id={0}
+          id={props.id}
           selected={selectedFace}
           selector={handleSelectFace}
           presentation={!editMode}
@@ -78,11 +83,13 @@ function Cube() {
           position={[0, 0, 0]}
         />
       </Canvas>
-      <div className="headingCube">
-        <div className="edit">
-          <EditSelector setEditMode={handleEditMode} />
+      {props.editable && (
+        <div className="headingCube">
+          <div className="edit">
+            <EditSelector setEditMode={handleEditMode} />
+          </div>
         </div>
-      </div>
+      )}
       {editMode && (
         <>
           {selectedFace && (

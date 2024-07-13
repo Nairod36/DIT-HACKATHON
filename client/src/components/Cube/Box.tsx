@@ -52,7 +52,7 @@ export default function Box(props: BoxProps) {
   return (
     <PresentationControls
       key={resetKey}
-      enabled={false} // the controls can be disabled by setting this to false
+      enabled={props.presentation} // the controls can be disabled by setting this to false
       global={false} // Spin globally or by dragging the model
       cursor={false} // Whether to toggle cursor style on drag
       snap={false} // Snap-back to center (can also be a spring config)
@@ -68,7 +68,7 @@ export default function Box(props: BoxProps) {
         speed={props.presentation ? 2 : 0}
       >
         <group
-          scale={1.5}
+          scale={2}
           ref={props.meshRef}
           onClick={() => setActive(!active)}
         >

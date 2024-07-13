@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "../components/ui/table";
 import { shortenAddress, formatDateTime } from "../lib/utils";
+import Cube from "@/components/Cube/Cube";
 
 const Historical = [
   {
@@ -77,6 +78,11 @@ const Historical = [
 ];
 
 export default function NFTDetails() {
+
+  const params = useParams()
+
+  console.log(params)
+
   const product = {
     name: "CubeWorld",
     description: "CubeWorld is a collection of 3D cubes",
@@ -101,7 +107,9 @@ export default function NFTDetails() {
                           "https://sothebys-com.brightspotcdn.com/dims4/default/441c499/2147483647/strip/true/crop/1080x1080+0+0/resize/684x684!/format/webp/quality/90/?url=http%3A%2F%2Fsothebys-brightspot.s3.amazonaws.com%2Fdotcom%2Fab%2Fa5%2F80c8e82e4d9ea9412f20b9e92988%2Fgif-fungibleopeneditions-small.gif"
                         }
                       /> */}
-                      <div className="w-100 h-100 md:w-114 md:h-114 lg:w-114 lg:h-114 ml-2 xl:ml-24 rounded-lg bg-black"></div>
+                      <div className="w-100 h-100 md:w-114 md:h-114 lg:w-114 lg:h-114 ml-2 xl:ml-24 rounded-lg">
+                        <Cube id={parseInt(params.id ?? "0")}/>
+                      </div>
                     </div>
                   </div>
 

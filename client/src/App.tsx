@@ -22,8 +22,7 @@ const App: React.FC = () => {
               <Route path="/upload" element={<UploadFile />} />
               <Route path="/product/:id" element={<NFTDetails />} />
               <Route path="/market" element={<Market />} />
-              <Route path="/upload" element={<UploadFile />} />
-              <Route path="/cube" element={<Cube />} />
+              <Route path="/cube" element={<Cube editable id={0}/>} />
             </Routes>
           </main>
         </div>
