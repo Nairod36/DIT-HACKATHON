@@ -1,12 +1,12 @@
-import React, { Suspense } from "react";
-import { ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import RowCards from "@/components/RowCards";
-import { useQuery } from "@tanstack/react-query";
-import { Product } from "@/types/product.type";
 import { ProductComponent } from "@/components/ProductComponent";
+import RowCards from "@/components/RowCards";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Product } from "@/types/product.type";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronRight } from "lucide-react";
+import { Suspense } from "react";
+import { Link } from "react-router-dom";
 
 export function Home() {
   const { data: products } = useQuery<Product[]>({
@@ -47,7 +47,7 @@ export function Home() {
       </section>
 
       <section className="flex flex-col md:flex-row items-center py-12 bg-dark justify-center">
-        {/* <RowCards /> */}
+        <RowCards />
       </section>
 
       <section className="flex-1 max-w-7xl container my-12 md:px-6 xl:px-1">

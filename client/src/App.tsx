@@ -3,6 +3,7 @@ import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Header } from "./components/common/Header";
 import Cube from "./components/Cube/Cube";
+import Footer from "./components/footer";
 import { Home } from "./pages/Home";
 import Market from "./pages/Market";
 import NFTDetails from "./pages/NFTDetails";
@@ -26,6 +27,7 @@ const App: React.FC = () => {
               <Route path="/cube" element={<CubeEdition id={1}/>} />
             </Routes>
           </main>
+        <Footer />
         </div>
       </Router>
     </QueryClientProvider>
