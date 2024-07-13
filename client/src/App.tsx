@@ -6,7 +6,7 @@ import Cube from "./components/Cube/Cube";
 import { Home } from "./pages/Home";
 import Market from "./pages/Market";
 import NFTDetails from "./pages/NFTDetails";
-import UploadFile from "./pages/UploadFile";
+import UploadFile from "./pages/UploadPage";
 
 const queryClient = new QueryClient();
 
