@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Header } from "./components/header";
 import { Home } from "./pages/Home";
 import UploadFile from "./pages/UploadFile";
+import Cube from "./components/Cube/Cube";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={<UploadFile />} />
+            <Route path="/cube" element={<Cube />} />
           </Routes>
         </main>
       </div>
