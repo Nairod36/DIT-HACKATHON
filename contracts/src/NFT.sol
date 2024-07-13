@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract UserStorage is ReentrancyGuard {
+contract NFT is ReentrancyGuard {
     // Mapping to store user addresses
     mapping(address => bool) private storedAddresses;
 
     // Event to log the storage of a new address
-    event AddressStored(address indexed userAddress);
+    event NftAddress(address indexed userAddress);
 
     // Function to store a new user address
     function storeUserAddress(address userAddress) external nonReentrant {
@@ -19,10 +19,10 @@ contract UserStorage is ReentrancyGuard {
         storedAddresses[userAddress] = true;
 
         // Emit event
-        emit AddressStored(userAddress);
+        emit NftAddress(userAddress);
     }
 
-    // Function to check if an address is already stored
+    // Function to check if an address is stored
     function isAddressStored(address userAddress) external view returns (bool) {
         return storedAddresses[userAddress];
     }
