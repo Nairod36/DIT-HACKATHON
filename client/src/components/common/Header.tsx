@@ -123,6 +123,12 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
           >
             Creative Space
           </Link>
+          <Link
+            className="mx-2 text-md sm:text-md xl:text-md/none sm:mx-4 md:mx-6 lg:mx-4 xl:mx-8"
+            to="/cube/:id"
+          >
+            Creative Cube
+          </Link>
           <a
             className="mx-2 text-md sm:text-md xl:text-md/none sm:mx-4 md:mx-6 lg:mx-4 xl:mx-8"
             href="https://github.com/Nairod36/DIT-HACKATHON"

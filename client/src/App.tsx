@@ -61,6 +61,14 @@ const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/cube/:id"
+                element={
+                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                    <CubeEdition id={0}/>
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
             <Footer />
           </main>
