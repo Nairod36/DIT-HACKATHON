@@ -5,7 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { Group } from "three";
 import gsap from "gsap";
 import EditSelector from "./EditSelector";
-import { FileUploader } from "./FileUploader";
+import { CubeEditor } from "./CubeEditor";
 
 type IProps = {
   id:number
@@ -16,11 +16,6 @@ function Cube(props: IProps) {
   const [editMode, setEditMode] = useState(false);
   const meshRef = useRef<Group>(null);
   const [selectedFace, setSelectedFace] = useState<number | null>(null);
-
-  const handleNewColor = (newColor: string) => {
-    if (!selectedFace) return;
-    console.log(`New color ${newColor} for face ${selectedFace}`);
-  };
 
   const handleSelectFace = (value: number) => {
     setSelectedFace((prev) => (value == prev ? null : value));
@@ -94,7 +89,7 @@ function Cube(props: IProps) {
         <>
           {selectedFace && (
             <div className="editionModal">
-              <FileUploader setNewColor={handleNewColor} />
+              <CubeEditor selected={selectedFace} />
             </div>
           )}
           <div className="buttons">

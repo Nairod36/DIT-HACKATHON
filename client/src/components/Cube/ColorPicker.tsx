@@ -9,8 +9,8 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
 
 type IPicker = {
-  pickColor: (newColor: string) => void;
-};
+  updateJSONColor:(color:string)=>void
+}
 
 export function PickerExample(props: IPicker) {
   const [background, setBackground] = useState(
@@ -20,7 +20,7 @@ export function PickerExample(props: IPicker) {
   const [verification, setVerification] = useState(true);
 
   const handlePickColor = () => {
-    props.pickColor(background);
+    props.updateJSONColor(background);
     setVerification(false);
   };
 
