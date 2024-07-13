@@ -107,7 +107,7 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
       <div className="flex py-3 w-full shrink-0 items-center px-6 mx-auto ">
         <Link className="flex" to="/">
           <h1 className="text-xl font-medium tracking-tighter sm:text-2xl xl:text-2xl/none pt-1">
-            Collab inc
+            Do It Together
           </h1>
         </Link>
         <nav className="flex flex-1 justify-center pt-1">
