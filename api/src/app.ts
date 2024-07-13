@@ -33,7 +33,7 @@ console.log("Connecté à la base de données avec succès");
 
     app.use(express.json());
     app.use('/api', verificationRoutes());
-    app.use("/api", participationRoutes(AppDataSource));
+    app.use('/api', participationRoutes(AppDataSource));
 
     app.listen(3000, () => {
         console.log('Server is running on port 3000');
