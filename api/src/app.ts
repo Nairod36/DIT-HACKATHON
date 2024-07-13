@@ -25,6 +25,7 @@ app.use(
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
+  port: parseInt(PORT!) || 5432,
   port: parseInt(DB_PORT!) || 5432,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
