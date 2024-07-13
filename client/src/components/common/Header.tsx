@@ -145,7 +145,7 @@ export function Header() {
           </Link>
           <a
             className="mx-2 text-md sm:text-md xl:text-md/none sm:mx-4 md:mx-6 lg:mx-4 xl:mx-8"
-            href="https://programmation.developpez.com/tutoriel/comment-devenir-bon-programmeur/?page=intermediaire"
+            href="https://github.com/Nairod36/DIT-HACKATHON"
           >
             About
           </a>
