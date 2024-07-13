@@ -1,7 +1,8 @@
 import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit'
+import * as dotenv from 'dotenv'
 
 const handleVerify = async (proof: ISuccessResult) => {
-    const res = await fetch("/api/verify", { // route to your backend will depend on implementation
+    const res = await fetch("http://localhost:3000/api/verify", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -16,12 +17,14 @@ const handleVerify = async (proof: ISuccessResult) => {
 const onSuccess = () => {
     // This is where you should perform any actions after the modal is closed
     // Such as redirecting the user to a new page
-    window.location.href = "/success";
+    window.location.href = "/";
 };
 
+dotenv.config();
+
 <IDKitWidget
-	app_id="app_staging_472279e5e8c78f87ad0b8fc62bd73fb3" // obtained from the Developer Portal
-	action="authorisation-user" // obtained from the Developer Portal
+	app_id= {import.meta.env.APP_ID as `app_${string}`} // obtained from the Developer Portal
+	action= {import.meta.env.VITE_ACTION_ID as `action_${string}`} // obtained from the Developer Portal
 	onSuccess={onSuccess} // callback when the modal is closed
 	handleVerify={handleVerify} // callback when the proof is received
 	verification_level={VerificationLevel.Orb}
