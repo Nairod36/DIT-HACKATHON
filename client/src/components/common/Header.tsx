@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-import Web3 from "web3";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3Auth } from "@web3auth/modal";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Web3 from "web3";
+import { Button } from "../ui/button";
 
 const clientId = "BCYyxrXqr9GijhnPonyf1loJ48c-IjMDzZtXskSrrrDmTJJ9shzpz32X8d0InuMc4CXkbYKeyR9tNCvuukcQ0-0"; // get from https://dashboard.web3auth.io
 
@@ -152,23 +153,23 @@ export function Header() {
         <div className="ml-auto flex items-center">
           {loggedIn ? (
             <div className="flex items-center">
-              <button onClick={getUserInfo} className="card">
+              {/* <button onClick={getUserInfo} className="card">
                 Get User Info
-              </button>
+              </button> */}
               <button onClick={getAccounts} className="card">
                 Get Accounts
               </button>
               {/* <button onClick={getBalance} className="card">
                 Get Balance
               </button> */}
-              <button onClick={logout} className="card">
+              <Button onClick={logout} className="card">
                 Logout
-              </button>
+              </Button>
             </div>
           ) : (
-            <button onClick={login} className="card">
+            <Button onClick={login} className="card">
               Login
-            </button>
+            </Button>
           )}
         </div>
       </div>
