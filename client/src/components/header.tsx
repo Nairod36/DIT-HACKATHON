@@ -19,6 +19,7 @@ const chainConfig = {
 };
 
 export function Header() {
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [web3, setWeb3] = useState<Web3 | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,18 +31,19 @@ export function Header() {
           config: { chainConfig },
         });
 
-        const web3auth = new Web3Auth({
+        const web3authInstance = new Web3Auth({
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
           privateKeyProvider: privateKeyProvider,
         });
 
-        await web3auth.initModal();
-        setProvider(web3auth.provider);
+        await web3authInstance.initModal();
+        setWeb3auth(web3authInstance);
 
-        if (web3auth.connected && web3auth.provider) {
+        if (web3authInstance.connected && web3authInstance.provider) {
+          setProvider(web3authInstance.provider);
           setLoggedIn(true);
-          const web3Instance = new Web3(web3auth.provider as any);
+          const web3Instance = new Web3(web3authInstance.provider as any);
           setWeb3(web3Instance);
         }
       } catch (error) {
@@ -53,17 +55,11 @@ export function Header() {
   }, []);
 
   const login = async () => {
+    if (!web3auth) {
+      console.error("Web3Auth is not initialized");
+      return;
+    }
     try {
-      const privateKeyProvider = new EthereumPrivateKeyProvider({
-        config: { chainConfig },
-      });
-
-      const web3auth = new Web3Auth({
-        clientId,
-        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        privateKeyProvider: privateKeyProvider,
-      });
-
       const web3authProvider = await web3auth.connect();
       setProvider(web3authProvider);
       if (web3auth.connected && web3authProvider) {
@@ -72,34 +68,32 @@ export function Header() {
         setWeb3(web3Instance);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Login failed", error);
     }
   };
 
   const logout = async () => {
+    if (!web3auth) {
+      console.error("Web3Auth is not initialized");
+      return;
+    }
     try {
-      const privateKeyProvider = new EthereumPrivateKeyProvider({
-        config: { chainConfig },
-      });
-
-      const web3auth = new Web3Auth({
-        clientId,
-        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        privateKeyProvider: privateKeyProvider,
-      });
-
       await web3auth.logout();
       setProvider(null);
       setLoggedIn(false);
       setWeb3(null);
     } catch (error) {
-      console.error(error);
+      console.error("Logout failed", error);
     }
   };
 
   const getUserInfo = async () => {
     if (!provider) {
       console.log("Provider not initialized yet");
+      return;
+    }
+    if (!web3auth) {
+      console.error("Web3Auth is not initialized");
       return;
     }
     const user = await web3auth.getUserInfo();
@@ -111,8 +105,8 @@ export function Header() {
       console.log("Provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-    const address = await web3.eth.getAccounts();
+    const web3Instance = new Web3(provider as any);
+    const address = await web3Instance.eth.getAccounts();
     console.log(address);
   };
 
@@ -121,9 +115,9 @@ export function Header() {
       console.log("Provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-    const address = (await web3.eth.getAccounts())[0];
-    const balance = web3.utils.fromWei(await web3.eth.getBalance(address), "ether");
+    const web3Instance = new Web3(provider as any);
+    const address = (await web3Instance.eth.getAccounts())[0];
+    const balance = web3Instance.utils.fromWei(await web3Instance.eth.getBalance(address), "ether");
     console.log(balance);
   };
 
@@ -164,9 +158,9 @@ export function Header() {
               <button onClick={getAccounts} className="card">
                 Get Accounts
               </button>
-              <button onClick={getBalance} className="card">
+              {/* <button onClick={getBalance} className="card">
                 Get Balance
-              </button>
+              </button> */}
               <button onClick={logout} className="card">
                 Logout
               </button>

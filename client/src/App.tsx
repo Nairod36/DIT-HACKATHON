@@ -11,7 +11,7 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <Router>
         <div className="App h-screen w-screen">
-          {/* <Header /> */}
+          <Header />
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
