@@ -1,28 +1,43 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import verificationRoutes from './routes/verification.route';
+import participationRoutes from './routes/participation.route';
+import { DataSource } from "typeorm";
+import { Participation } from "./entities/participation.entity";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
+const PORT = process.env.POSTGRES_PORT;
 
-// Middleware pour parser les requêtes JSON
-app.use(express.json());
+// Configuration de l'objet DataSource en utilisant process.env
+export const AppDataSource = new DataSource({
+    type: "postgres",
+    host: process.env.POSTGRES_HOST,
+    port: parseInt(PORT!) || 5432,
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DATABASE,
+    entities: [Participation],
+    synchronize: true,
+    logging: false,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
 
-// Route de base
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
+// Initialisation de la connexion à la base de données et démarrage du serveur
+AppDataSource.initialize()
+.then(() => {
+console.log("Connecté à la base de données avec succès");
 
-// Exemple de route GET
-app.get('/api/example', (req: Request, res: Response) => {
-  res.json({ message: 'This is an example endpoint' });
-});
+    app.use(express.json());
+    app.use('/api', verificationRoutes());
+    app.use('/api', participationRoutes(AppDataSource));
 
-// Exemple de route POST
-app.post('/api/example', (req: Request, res: Response) => {
-  const data = req.body;
-  res.json({ message: 'Data received', data });
-});
-
-// Démarrer le serveur
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    app.listen(3000, () => {
+        console.log('Server is running on port 3000');
+    });
+}).catch((error) => {
+    console.error("Erreur lors de la connexion à la base de données", error);
 });
