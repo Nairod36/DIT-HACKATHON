@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import Market from "./pages/Market";
 import NFTDetails from "./pages/NFTDetails";
 import UploadFile from "./pages/UploadPage";
+import { CubeEdition } from "./pages/CubeEdition";
 
 const queryClient = new QueryClient();
 
@@ -14,15 +15,15 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="App h-screen w-screen">
+        <div className="App h-screen w-screen overflow-hidden">
           <Header />
-          <main>
+          <main className="h-full">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/upload" element={<UploadFile />} />
               <Route path="/product/:id" element={<NFTDetails />} />
               <Route path="/market" element={<Market />} />
-              <Route path="/cube" element={<Cube editable id={0}/>} />
+              <Route path="/cube" element={<CubeEdition id={1}/>} />
             </Routes>
           </main>
         </div>

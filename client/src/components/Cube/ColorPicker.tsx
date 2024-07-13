@@ -8,7 +8,7 @@ import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 
 type IPicker = {
-  pickColor:(newColor:string)=>void
+  updateJSONColor:(color:string)=>void
 }
 
 export function PickerExample(props:IPicker) {
@@ -17,7 +17,7 @@ export function PickerExample(props:IPicker) {
   );
 
   const handlePickColor = () => {
-    props.pickColor(background)
+    props.updateJSONColor(background)
   }
 
   return (
