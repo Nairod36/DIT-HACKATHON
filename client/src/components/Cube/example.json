@@ -1,6 +1,8 @@
 {
     "id":0,
     "size":3,
+    "name":"First Cube",
+    "description":"This is a Unique Cube",
     "faces":[
         {
             "id":0,
