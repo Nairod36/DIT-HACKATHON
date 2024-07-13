@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lighthouse-web3/sdk": "^0.3.3",
     "@radix-ui/react-slot": "^1.1.0",
     "@react-three/drei": "^9.108.3",
     "@react-three/fiber": "^8.16.8",
