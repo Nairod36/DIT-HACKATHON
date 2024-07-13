@@ -19,11 +19,15 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-export function Header() {
+interface HeaderProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoggedIn: boolean;
+}
+
+export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [web3, setWeb3] = useState<Web3 | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -43,7 +47,7 @@ export function Header() {
 
         if (web3authInstance.connected && web3authInstance.provider) {
           setProvider(web3authInstance.provider);
-          setLoggedIn(true);
+          setIsLoggedIn(true);
           const web3Instance = new Web3(web3authInstance.provider as any);
           setWeb3(web3Instance);
         }
@@ -53,7 +57,7 @@ export function Header() {
     };
 
     init();
-  }, []);
+  }, [setIsLoggedIn]);
 
   const login = async () => {
     if (!web3auth) {
@@ -64,7 +68,7 @@ export function Header() {
       const web3authProvider = await web3auth.connect();
       setProvider(web3authProvider);
       if (web3auth.connected && web3authProvider) {
-        setLoggedIn(true);
+        setIsLoggedIn(true);
         const web3Instance = new Web3(web3authProvider as any);
         setWeb3(web3Instance);
       }
@@ -81,24 +85,11 @@ export function Header() {
     try {
       await web3auth.logout();
       setProvider(null);
-      setLoggedIn(false);
+      setIsLoggedIn(false);
       setWeb3(null);
     } catch (error) {
       console.error("Logout failed", error);
     }
-  };
-
-  const getUserInfo = async () => {
-    if (!provider) {
-      console.log("Provider not initialized yet");
-      return;
-    }
-    if (!web3auth) {
-      console.error("Web3Auth is not initialized");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    console.log(user);
   };
 
   const getAccounts = async () => {
@@ -109,17 +100,6 @@ export function Header() {
     const web3Instance = new Web3(provider as any);
     const address = await web3Instance.eth.getAccounts();
     console.log(address);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      console.log("Provider not initialized yet");
-      return;
-    }
-    const web3Instance = new Web3(provider as any);
-    const address = (await web3Instance.eth.getAccounts())[0];
-    const balance = web3Instance.utils.fromWei(await web3Instance.eth.getBalance(address), "ether");
-    console.log(balance);
   };
 
   return (
@@ -145,23 +125,17 @@ export function Header() {
           </Link>
           <a
             className="mx-2 text-md sm:text-md xl:text-md/none sm:mx-4 md:mx-6 lg:mx-4 xl:mx-8"
-            href="https://programmation.developpez.com/tutoriel/comment-devenir-bon-programmeur/?page=intermediaire"
+            href="https://github.com/Nairod36/DIT-HACKATHON"
           >
             About
           </a>
         </nav>
         <div className="ml-auto flex items-center">
-          {loggedIn ? (
+          {isLoggedIn ? (
             <div className="flex items-center">
-              {/* <button onClick={getUserInfo} className="card">
-                Get User Info
-              </button> */}
               <button onClick={getAccounts} className="card">
                 Get Accounts
               </button>
-              {/* <button onClick={getBalance} className="card">
-                Get Balance
-              </button> */}
               <Button onClick={logout} className="card">
                 Logout
               </Button>

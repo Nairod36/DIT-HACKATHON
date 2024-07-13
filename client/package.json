@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
+    "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.0.18",
     "@lighthouse-web3/sdk": "^0.3.3",
     "@radix-ui/react-label": "^2.1.0",
