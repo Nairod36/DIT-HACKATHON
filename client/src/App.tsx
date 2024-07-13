@@ -1,6 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { Header } from "./components/common/Header";
 import Cube from "./components/Cube/Cube";
 import Footer from "./components/footer";
@@ -19,7 +24,7 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="App h-screen w-screen overflow-hidden">
+        <div className="App h-screen w-screen">
           <Header setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
           <main className="h-full">
             <Routes>
@@ -57,8 +62,8 @@ const App: React.FC = () => {
                 }
               />
             </Routes>
+            <Footer />
           </main>
-          <Footer />
         </div>
       </Router>
     </QueryClientProvider>
