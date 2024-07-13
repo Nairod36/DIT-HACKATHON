@@ -1,4 +1,5 @@
 import { Entity, Column, OneToMany } from "typeorm";
+import { Participation } from "./participation.entity";
 import { BaseEntity } from "./base.entity";
 
 export enum ProductType {
@@ -9,6 +10,9 @@ export enum ProductType {
 export class Product extends BaseEntity {
   @Column()
   address!: string;
+
+  @OneToMany(() => Participation, (participation) => participation.product)
+  addressParticipations!: Participation[];
 
   @Column()
   type!: ProductType;
