@@ -29,7 +29,10 @@ contract QueryVision is Script {
         images[1] = "https://evm-poc-images.s3.eu-central-1.amazonaws.com/royal-tang/2.png";
         images[2] = "https://evm-poc-images.s3.eu-central-1.amazonaws.com/royal-tang/3.png";
 
-        openAiChatGptVision.startChat("what animal is in these images", images);
+        openAiChatGptVision.startChat(
+            "Does this images contain any illegal content on them (like NSFW, Copyrighted content,...) ? Answer simply by true or false.",
+            images
+        );
 
         vm.stopBroadcast();
     }
