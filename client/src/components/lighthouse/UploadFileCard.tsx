@@ -1,5 +1,6 @@
 // src/components/UploadFileCard.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
+import lighthouse from "@lighthouse-web3/sdk";
 import {
   Card,
   CardHeader,
@@ -9,9 +10,90 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { UploadIcon } from "../../icons/Icons";
+import { Button } from "../ui/button";
 import clsx from "clsx";
 
 const UploadFileCard: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [confirmationMessage, setConfirmationMessage] = useState({
+    message: "",
+    type: "",
+  });
+
+  useEffect(() => {
+    if (!file) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    // Cleanup the object URL when the component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
+
+  const progressCallback = (progressData: {
+    total: number;
+    uploaded: number;
+  }) => {
+    const percentageDone = (progressData.uploaded / progressData.total) * 100;
+    setProgress(percentageDone);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      setConfirmationMessage({
+        message: "Please select a file to upload.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!import.meta.env.VITE_LIGHTHOUSE_API_KEY) {
+      console.error("Please set LIGHTHOUSE_API_KEY in .env file");
+      return;
+    }
+
+    const dealParams = {
+      num_copies: 2,
+      repair_threshold: 28800,
+      renew_threshold: 240,
+      miner: ["t017840"],
+      network: "calibration",
+      deal_duration: 518400,
+    };
+
+    try {
+      const output = await lighthouse.upload(
+        file,
+        import.meta.env.VITE_LIGHTHOUSE_API_KEY,
+        false,
+        dealParams,
+        progressCallback
+      );
+      console.log("File uploaded successfully:", output);
+
+      setConfirmationMessage({
+        message: `File uploaded successfully! Visit at https://gateway.lighthouse.storage/ipfs/${output.data.Hash}`,
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setConfirmationMessage({
+        message: "Error uploading file. Please try again.",
+        type: "error",
+      });
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -25,7 +107,7 @@ const UploadFileCard: React.FC = () => {
           <div className="flex flex-col items-center justify-center h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md border-primary-foreground hover:border-primary cursor-pointer">
             <UploadIcon className="w-8 h-8 mb-1 text-primary-foreground" />
             <input
-              // onChange={handleFileChange}
+              onChange={handleFileChange}
               type="file"
               className="hidden"
               id="file-upload"
@@ -37,7 +119,7 @@ const UploadFileCard: React.FC = () => {
             </label>
           </div>
         </div>
-        {/* {preview && (
+        {preview && (
           <div className="mt-4">
             <img
               src={preview}
@@ -45,14 +127,14 @@ const UploadFileCard: React.FC = () => {
               className="w-full rounded-md object-cover"
             />
           </div>
-        )} */}
+        )}
         <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden mt-4">
           <div
             className={clsx("h-full bg-blue-500 transition-all duration-300")}
-            // style={{ width: `${progress}%` }}
+            style={{ width: `${progress}%` }}
           ></div>
         </div>
-        {/* {confirmationMessage.message && (
+        {confirmationMessage.message && (
           <div
             className={clsx(
               "mt-4 p-3 text-sm rounded-md",
@@ -63,12 +145,12 @@ const UploadFileCard: React.FC = () => {
           >
             {confirmationMessage.message}
           </div>
-        )} */}
+        )}
       </CardContent>
       <CardFooter className="flex justify-end">
-        {/* <Button type="button" onClick={handleUpload}>
+        <Button type="button" onClick={handleUpload}>
           Upload
-        </Button> */}
+        </Button>
       </CardFooter>
     </Card>
   );
