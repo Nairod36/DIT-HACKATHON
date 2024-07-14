@@ -1,13 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Route,
   BrowserRouter as Router,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import { Header } from "./components/common/Header";
-import Cube from "./components/Cube/Cube";
 import Footer from "./components/footer";
 import { Home } from "./pages/Home";
 import Market from "./pages/Market";
@@ -16,7 +14,6 @@ import UploadFile from "./pages/UploadPage";
 import { CubeEdition } from "./pages/CubeEdition";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 import {
@@ -44,14 +41,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 export const db = getDatabase(app);
 export const storage = getStorage();
 const auth = getAuth();
-export const signIn = (email, password) => {
+export const signIn = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
-export const signUp = (email, password) => {
+export const signUp = (email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 

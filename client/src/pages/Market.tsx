@@ -1,4 +1,4 @@
-import React, { useState, Fragment, Suspense, useEffect } from "react";
+import { useState, Fragment, Suspense, useEffect } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,

@@ -5,8 +5,6 @@ import Cube from "./Cube/Cube";
 // components/Product.js
 export function ProductComponent({
   id,
-  address,
-  type,
   name,
   price,
   description,
