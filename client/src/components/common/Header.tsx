@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import { Button } from "../ui/button";
+import Profile from "../Profil";
 
 const clientId = "BCYyxrXqr9GijhnPonyf1loJ48c-IjMDzZtXskSrrrDmTJJ9shzpz32X8d0InuMc4CXkbYKeyR9tNCvuukcQ0-0"; // get from https://dashboard.web3auth.io
 
@@ -137,7 +138,7 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
           </a>
         </nav>
         <div className="ml-auto flex items-center">
-          {isLoggedIn ? (
+          {/* {isLoggedIn ? (
             <div className="flex items-center">
               <button onClick={getAccounts} className="card">
                 Get Accounts
@@ -150,7 +151,8 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
             <Button onClick={login} className="card">
               Login
             </Button>
-          )}
+          )} */}
+          <Profile/>
         </div>
       </div>
     </header>

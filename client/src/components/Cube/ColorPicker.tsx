@@ -8,51 +8,30 @@ import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
 import abi from "../../abi/NFT.json"; // Chemin vers votre fichier ABI JSON
-import { Contract } from "ethers";
-import { useEthersProvider, useEthersSigner } from "../../config/ether";
-import { Web3Auth } from "@web3auth/modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import Web3 from "web3";
-
+import { useAccount } from "wagmi";
 type IPicker = {
   updateJSONColor: (color: string) => void;
 };
 
 export function PickerExample(props: IPicker) {
-  // const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  // const [provider, setProvider] = useState<IProvider | null>(null);
-  // const web3Instance = new Web3(provider as any);
+
+  const {isConnected} = useAccount()
 
   useEffect(() => {
-    const getAccounts = async () => {
-      if (!provider) {
-        console.log("Provider not initialized yet");
-        return;
-      }
-      const web3Instance = new Web3(provider as any);
-      const address = await web3Instance.eth.getAccounts();
-      console.log(address);
-    };
-    getAccounts();
-  });
-  
+    console.log(isConnected)
+  }, []);
 
-  const chainid = process.env.VITE_CHAIN_ID;
-  console.log("PickerExample");
-  const provider = useEthersProvider(chainid ? { chainId: parseInt(chainid) } : {});
-  console.log("provider", provider);
-  if (!provider) {
-    throw new Error("Ethers provider is missing");
-  }
-  const signer = useEthersSigner();
-  console.log("signer", signer);
-  const contractAddress = process.env.VITE_NFT_ADDRESS;
+  // const provider = useEthersProvider(chainid ? { chainId: parseInt(chainid) } : {});
 
-  if (!contractAddress) {
-    throw new Error("Contract address is missing");
-  }
-  
-  const contract = new Contract(contractAddress, abi.abi, signer);
+  // const signer = useEthersSigner();
+  // console.log("signer", signer);
+  // const contractAddress = process.env.VITE_NFT_ADDRESS;
+
+  // if (!contractAddress) {
+  //   throw new Error("Contract address is missing");
+  // }
+
+  // const contract = new Contract(contractAddress, abi.abi, signer);
 
   const [background, setBackground] = useState(
     "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)"
@@ -64,15 +43,15 @@ export function PickerExample(props: IPicker) {
   const handlePickColor = async () => {
     try {
       // Vérifier si déjà participé (isAddressStored)
-      const isStored = await contract.isAddressStored(userAddress);
-      if (isStored) {
-        alert("Address is already stored");
-        return;
-      }
+      // const isStored = await contract.isAddressStored(userAddress);
+      // if (isStored) {
+      //   alert("Address is already stored");
+      //   return;
+      // }
 
       // Ajouter l'adresse dans la liste des participants (storeUserAddress)
-      const tx = await contract.storeUserAddress(userAddress);
-      await tx.wait();
+      // const tx = await contract.storeUserAddress(userAddress);
+      // await tx.wait();
 
       props.updateJSONColor(background);
       setVerification(false);
@@ -85,35 +64,30 @@ export function PickerExample(props: IPicker) {
     setVerification(false);
   };
 
-  useEffect(() => {
-    const loadUserAddress = async () => {
-      const [address] = await provider.listAccounts();
-      setUserAddress(address);
-    };
-    loadUserAddress();
-  }, [provider]);
-
   return (
     <>
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <div
-            className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
-            style={{ background }}
-          >
-            <GradientPicker background={background} setBackground={setBackground} />
-          </div>
-        </CardContent>
-        <CardFooter>
-          {verification ? (
-            <VerifyComponent resetVerification={resetVerification} />
-          ) : (
-            <Button onClick={handlePickColor} className="w-full" size="lg">
-              Validate
-            </Button>
-          )}
-        </CardFooter>
-      </Card>
+        <Card>
+          <CardContent className="p-6 space-y-4">
+            <div
+              className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
+              style={{ background }}
+            >
+              <GradientPicker
+                background={background}
+                setBackground={setBackground}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            {verification ? (
+              <VerifyComponent resetVerification={resetVerification} />
+            ) : (
+              <Button onClick={handlePickColor} className="w-full" size="lg">
+                Validate
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
     </>
   );
 }
