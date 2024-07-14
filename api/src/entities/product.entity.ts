@@ -18,6 +18,9 @@ export class Product extends BaseEntity {
   type!: ProductType;
 
   @Column()
+  data_uri!: string;
+
+  @Column()
   name!: string;
 
   @Column()

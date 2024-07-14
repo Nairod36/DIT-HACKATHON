@@ -25,8 +25,7 @@ app.use(
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
-  port: parseInt(PORT!) || 5432,
-  port: parseInt(DB_PORT!) || 5432,
+  port: 5432,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
@@ -48,8 +47,8 @@ AppDataSource.initialize()
     app.use("/api", participationRoutes(AppDataSource));
     app.use("/api", productRoutes(AppDataSource));
 
-    app.listen(API_PORT, () => {
-      console.log(`Server is running on port ${API_PORT}`);
+    app.listen(5432, () => {
+      console.log(`Server is running on port ${5432}`);
     });
   })
   .catch((error) => {
