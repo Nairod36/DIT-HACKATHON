@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 import clsx from "clsx";
 
 const UploadFileCard: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<FileList | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [confirmationMessage, setConfirmationMessage] = useState({
@@ -23,17 +23,17 @@ const UploadFileCard: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!file) {
+    if (!files) {
       setPreview(null);
       return;
     }
 
-    const objectUrl = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(files[0]);
     setPreview(objectUrl);
 
     // Cleanup the object URL when the component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
-  }, [file]);
+  }, [files]);
 
   const progressCallback = (progressData: {
     total: number;
@@ -44,12 +44,12 @@ const UploadFileCard: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0] || null;
-    setFile(selectedFile);
+    const selectedFiles = e.target.files || null;
+    setFiles(selectedFiles);
   };
 
   const handleUpload = async () => {
-    if (!file) {
+    if (!files) {
       setConfirmationMessage({
         message: "Please select a file to upload.",
         type: "error",
@@ -73,7 +73,7 @@ const UploadFileCard: React.FC = () => {
 
     try {
       const output = await lighthouse.upload(
-        file,
+        files,
         import.meta.env.VITE_LIGHTHOUSE_API_KEY,
         false,
         dealParams,
