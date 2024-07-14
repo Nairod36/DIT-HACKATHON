@@ -1,5 +1,5 @@
 import { Paintbrush } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
@@ -7,26 +7,91 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
+import abi from "../../abi/NFT.json"; // Chemin vers votre fichier ABI JSON
+import { Contract } from "ethers";
+import { useEthersProvider, useEthersSigner } from "../../config/ether";
+import { Web3Auth } from "@web3auth/modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3 from "web3";
 
 type IPicker = {
-  updateJSONColor:(color:string)=>void
-}
+  updateJSONColor: (color: string) => void;
+};
 
 export function PickerExample(props: IPicker) {
+  // const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  // const [provider, setProvider] = useState<IProvider | null>(null);
+  // const web3Instance = new Web3(provider as any);
+
+  useEffect(() => {
+    const getAccounts = async () => {
+      if (!provider) {
+        console.log("Provider not initialized yet");
+        return;
+      }
+      const web3Instance = new Web3(provider as any);
+      const address = await web3Instance.eth.getAccounts();
+      console.log(address);
+    };
+    getAccounts();
+  });
+  
+
+  const chainid = process.env.VITE_CHAIN_ID;
+  console.log("PickerExample");
+  const provider = useEthersProvider(chainid ? { chainId: parseInt(chainid) } : {});
+  console.log("provider", provider);
+  if (!provider) {
+    throw new Error("Ethers provider is missing");
+  }
+  const signer = useEthersSigner();
+  console.log("signer", signer);
+  const contractAddress = process.env.VITE_NFT_ADDRESS;
+
+  if (!contractAddress) {
+    throw new Error("Contract address is missing");
+  }
+  
+  const contract = new Contract(contractAddress, abi.abi, signer);
+
   const [background, setBackground] = useState(
     "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)"
   );
 
   const [verification, setVerification] = useState(true);
+  const [userAddress, setUserAddress] = useState<string>("");
 
-  const handlePickColor = () => {
-    props.updateJSONColor(background);
-    setVerification(false);
+  const handlePickColor = async () => {
+    try {
+      // Vérifier si déjà participé (isAddressStored)
+      const isStored = await contract.isAddressStored(userAddress);
+      if (isStored) {
+        alert("Address is already stored");
+        return;
+      }
+
+      // Ajouter l'adresse dans la liste des participants (storeUserAddress)
+      const tx = await contract.storeUserAddress(userAddress);
+      await tx.wait();
+
+      props.updateJSONColor(background);
+      setVerification(false);
+    } catch (error) {
+      console.error("Error storing address:", error);
+    }
   };
 
   const resetVerification = () => {
     setVerification(false);
-  }
+  };
+
+  useEffect(() => {
+    const loadUserAddress = async () => {
+      const [address] = await provider.listAccounts();
+      setUserAddress(address);
+    };
+    loadUserAddress();
+  }, [provider]);
 
   return (
     <>
@@ -36,10 +101,7 @@ export function PickerExample(props: IPicker) {
             className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
             style={{ background }}
           >
-            <GradientPicker
-              background={background}
-              setBackground={setBackground}
-            />
+            <GradientPicker background={background} setBackground={setBackground} />
           </div>
         </CardContent>
         <CardFooter>
