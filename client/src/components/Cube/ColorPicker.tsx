@@ -7,9 +7,9 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
-import nftAbi from "../../abi/NFT.json"; // Chemin vers votre fichier ABI JSON
+import nftAbi from "../../abi/NFT"; // Chemin vers votre fichier ABI JSON
 import { useAccount, useWriteContract } from "wagmi";
-import { useReadNftContractIsAddressStored, useWriteNftContractStoreUserAddress } from "../../hook/WagmiGenerated";
+import { useReadNftContractIsAddressStored } from "../../hook/WagmiGenerated";
 
 type IPicker = {
   updateJSONColor: (color: string) => void;
@@ -27,54 +27,33 @@ export function PickerExample(props: IPicker) {
   }, []);
 
   const isStoredAbi = useReadNftContractIsAddressStored({
-    args: [addressUser],
+    args: [addressUser as `0x${string}`],
   });
   const { data: isStored } = isStoredAbi;
 
-  const handleStoreAddress = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleStoreAddress = async (addressUser: string | `0x${string}`) => {
     const tx = await writeContract({
       abi: nftAbi,
-      address: nftAddress,
+      address: nftAddress as `0x${string}`,
       functionName: "storeUserAddress",
-      args: [],
+      args: [addressUser as `0x${string}`],
     });
   };
-
-
-  // const provider = useEthersProvider(chainid ? { chainId: parseInt(chainid) } : {});
-
-  // const signer = useEthersSigner();
-  // console.log("signer", signer);
-  // const contractAddress = process.env.VITE_NFT_ADDRESS;
-
-  // if (!contractAddress) {
-  //   throw new Error("Contract address is missing");
-  // }
-
-  // const contract = new Contract(contractAddress, abi.abi, signer);
 
   const [background, setBackground] = useState(
     "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)"
   );
 
   const [verification, setVerification] = useState(true);
-  const [userAddress, setUserAddress] = useState<string>("");
 
   const handlePickColor = async () => {
     try {
-      // Vérifier si déjà participé (isAddressStored)
-      // const isStored = await contract.isAddressStored(userAddress);
-      // if (isStored) {
-      //   alert("Address is already stored");
-      //   return;
-      // }
-
-      // Ajouter l'adresse dans la liste des participants (storeUserAddress)
-      // const tx = await contract.storeUserAddress(userAddress);
-      // await tx.wait();
-
+      if (isStored) {
+        setVerification(false);
+        return;
+      }
       props.updateJSONColor(background);
+      handleStoreAddress(addressUser as `0x${string}`);
       setVerification(false);
     } catch (error) {
       console.error("Error storing address:", error);
