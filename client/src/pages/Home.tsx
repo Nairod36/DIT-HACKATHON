@@ -1,3 +1,4 @@
+import Cube from "@/components/Cube/Cube";
 import { ProductComponent } from "@/components/ProductComponent";
 import RowCards from "@/components/RowCards";
 import { Button } from "@/components/ui/button";
@@ -13,8 +14,7 @@ export function Home() {
     queryKey: ["products"],
     // queryFn: () =>
     //   fetch("http://localhost:3001/api/products").then((res) => res.json()),
-  }
-);
+  });
 
   // Assurez-vous que vos composants Product et Title sont importés correctement.
 
@@ -37,12 +37,8 @@ export function Home() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg max-w-xs md:max-w-none mx-12">
-          <img
-            alt="content"
-            className="object-cover w-full h-auto rounded-lg  w-100 h-100 md:w-114 md:h-114 lg:w-90 lg:h-90"
-            src="https://sothebys-com.brightspotcdn.com/dims4/default/441c499/2147483647/strip/true/crop/1080x1080+0+0/resize/684x684!/format/webp/quality/90/?url=http%3A%2F%2Fsothebys-brightspot.s3.amazonaws.com%2Fdotcom%2Fab%2Fa5%2F80c8e82e4d9ea9412f20b9e92988%2Fgif-fungibleopeneditions-small.gif"
-          />
+        <div className="w-100 h-100 md:w-114 md:h-114 lg:w-114 lg:h-114 ml-2 xl:ml-24 rounded-lg">
+          <Cube />
         </div>
       </section>
 

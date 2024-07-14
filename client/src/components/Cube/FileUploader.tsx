@@ -8,11 +8,20 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { PickerExample } from "./ColorPicker";
+import { storage } from "@/App";
+import {
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 export const FileUploader = (props) => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imgurUrl, setImgurUrl] = useState(null);
+  const { params } = props;
+
+  console.log("params", params);
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -23,24 +32,29 @@ export const FileUploader = (props) => {
   };
 
   const uploadFile = async (file) => {
+    if (imageUpload === null) {
+      toastifyError("Please select an image");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", file);
 
-    try {
-      const response = await fetch("https://api.imgur.com/3/image/", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: "Client-ID 987159710769363",
-          Accept: "application/json",
-        },
-      });
+    const imageRef = storageRef(storage, `nft/${1}`);
 
-      const data = await response.json();
-      setImgurUrl(data.data.link);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+    uploadBytes(imageRef, imageUpload)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((url) => {
+            setImgurUrl(url);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleSubmit = async () => {
