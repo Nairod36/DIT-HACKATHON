@@ -1,0 +1,311 @@
+{
+    "id": 0,
+    "size": 3,
+    "name": "First Cube",
+    "description": "This is a Unique Cube",
+    "faces": [
+        {
+            "id": 0,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#70e2ff",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "linear-gradient(to bottom right,#8a2be2,#0000cd,#228b22,#ccff00)",
+                    "locked": true
+                },
+                {
+                    "id": 5,
+                    "color": "#ffa",
+                    "image": "https://gateway.lighthouse.storage/ipfs/bafkreibnlnfkaxxcu4l5cfv2yucjhe5hr6t5h3tfe7eobnerkinse2addi",
+                    "locked": true
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "image": "https://gateway.lighthouse.storage/ipfs/bafkreicjftaj5dke4ds6n3tavbrrmabjvraipvshz2gmjep5vp6tevn26u",
+                    "locked": true
+                },
+                {
+                    "id": 8,
+                    "color": "#9fff5b",
+                    "locked": true
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 5,
+                    "color": "#ff75c3",
+                    "locked": true
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 8,
+                    "color": "#ffa647",
+                    "locked": false
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "linear-gradient(to bottom right,#40E0D0,#FF8C00,#FF0080)",
+                    "locked": true
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)",
+                    "locked": true
+                },
+                {
+                    "id": 5,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 8,
+                    "color": "#ffa647",
+                    "image": "https://gateway.lighthouse.storage/ipfs/bafkreiex4uzncyrzhcsjmnrjrsz2w2kbnzknpxc2thksanmuamcycc6m4a",
+                    "locked": true
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)",
+                    "locked": true
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 5,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 8,
+                    "color": "#ffa647",
+                    "locked": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 5,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 8,
+                    "color": "#ffa647",
+                    "locked": false
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "parts": [
+                {
+                    "id": 0,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 1,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 2,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 3,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 4,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 5,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 6,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 7,
+                    "color": "#ffa647",
+                    "locked": false
+                },
+                {
+                    "id": 8,
+                    "color": "#ffa647",
+                    "locked": false
+                }
+            ]
+        }
+    ]
+}
