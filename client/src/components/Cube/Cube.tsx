@@ -6,16 +6,14 @@ import { Group } from "three";
 import gsap from "gsap";
 import EditSelector from "./EditSelector";
 import { CubeEditor } from "./CubeEditor";
+import { useParams } from "react-router-dom";
 
-type IProps = {
-  id:number
-  editable?: boolean;
-};
-
-function Cube(props: IProps) {
+function Cube(props) {
   const [editMode, setEditMode] = useState(false);
   const meshRef = useRef<Group>(null);
   const [selectedFace, setSelectedFace] = useState<number | null>(null);
+  // get React router params
+  const { id } = useParams<{ id: string }>();
 
   const handleSelectFace = (value: number) => {
     setSelectedFace((prev) => (value == prev ? null : value));
@@ -70,7 +68,7 @@ function Cube(props: IProps) {
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
         <Box
-          id={props.id}
+          id={id}
           selected={selectedFace}
           selector={handleSelectFace}
           presentation={!editMode}

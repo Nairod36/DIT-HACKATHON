@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import Web3 from "web3";
 import { Button } from "../ui/button";
 
-const clientId = "BCYyxrXqr9GijhnPonyf1loJ48c-IjMDzZtXskSrrrDmTJJ9shzpz32X8d0InuMc4CXkbYKeyR9tNCvuukcQ0-0"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BCYyxrXqr9GijhnPonyf1loJ48c-IjMDzZtXskSrrrDmTJJ9shzpz32X8d0InuMc4CXkbYKeyR9tNCvuukcQ0-0"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -125,7 +126,7 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
           </Link>
           <Link
             className="mx-2 text-md sm:text-md xl:text-md/none sm:mx-4 md:mx-6 lg:mx-4 xl:mx-8"
-            to="/cube/:id"
+            to="/cube/1"
           >
             Creative Cube
           </Link>

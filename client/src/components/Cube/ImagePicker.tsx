@@ -5,33 +5,27 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { storage } from "@/App";
+import {
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 type IProps = {
-  updateJSONImg:(uri:string)=>void
-}
+  updateJSONImg: (uri: string) => void;
+};
 
-export const ImagePicker = (props:IProps) => {
-  const [files, setFiles] = useState<FileList | null>(null);
+export const ImagePicker = (props: IProps) => {
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [imgurUrl, setImgurUrl] = useState<string | null>(null);
   const [confirmationMessage, setConfirmationMessage] = useState({
     message: "",
     type: "",
   });
-
-  useEffect(() => {
-    if (!files) {
-      setPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(files[0]);
-    setPreview(objectUrl);
-
-    // Cleanup the object URL when the component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [files]);
 
   const progressCallback = (progressData: {
     total: number;
@@ -42,12 +36,18 @@ export const ImagePicker = (props:IProps) => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files || null;
-    setFiles(selectedFiles);
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    setImageUpload(selectedFile);
+
+    if (selectedFile) {
+      const objectUrl = URL.createObjectURL(selectedFile);
+      setPreview(objectUrl);
+      URL.revokeObjectURL(objectUrl); // Cleanup
+    }
   };
 
-  const handleUpload = async () => {
-    if (!files) {
+  const handleUpload = async (file: File) => {
+    if (!file) {
       setConfirmationMessage({
         message: "Please select a file to upload.",
         type: "error",
@@ -55,34 +55,16 @@ export const ImagePicker = (props:IProps) => {
       return;
     }
 
-    if (!import.meta.env.VITE_LIGHTHOUSE_API_KEY) {
-      console.error("Please set LIGHTHOUSE_API_KEY in .env file");
-      return;
-    }
-
-    const dealParams = {
-      num_copies: 2,
-      repair_threshold: 28800,
-      renew_threshold: 240,
-      miner: ["t017840"],
-      network: "calibration",
-      deal_duration: 518400,
-    };
+    const imageRef = storageRef(storage, `nft/${file.name}`);
 
     try {
-      const output = await lighthouse.upload(
-        files,
-        import.meta.env.VITE_LIGHTHOUSE_API_KEY,
-        false,
-        undefined,
-        progressCallback
-      );
-      console.log("File uploaded successfully:", output);
-
-      props.updateJSONImg(`https://gateway.lighthouse.storage/ipfs/${output.data.Hash}`)
-
+      const snapshot = await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      setImgurUrl(url);
+      console.log(url);
+      //   props.updateJSONImg(url);
       setConfirmationMessage({
-        message: `File uploaded successfully! Visit at https://gateway.lighthouse.storage/ipfs/${output.data.Hash}`,
+        message: "File uploaded successfully!",
         type: "success",
       });
     } catch (error) {
@@ -91,6 +73,12 @@ export const ImagePicker = (props:IProps) => {
         message: "Error uploading file. Please try again.",
         type: "error",
       });
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (imageUpload) {
+      await handleUpload(imageUpload);
     }
   };
 
@@ -120,11 +108,17 @@ export const ImagePicker = (props:IProps) => {
           <Label htmlFor="file" className="text-sm font-medium">
             File
           </Label>
-          <Input onChange={handleFileChange} id="file" type="file" placeholder="File" accept="image/*" />
+          <Input
+            onChange={handleFileChange}
+            id="file"
+            type="file"
+            placeholder="File"
+            accept="image/*"
+          />
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleUpload} className="w-full" size="lg">
+        <Button onClick={handleSubmit} className="w-full" size="lg">
           Upload
         </Button>
       </CardFooter>
