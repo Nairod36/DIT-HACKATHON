@@ -7,19 +7,40 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
-import abi from "../../abi/NFT.json"; // Chemin vers votre fichier ABI JSON
-import { useAccount } from "wagmi";
+import nftAbi from "../../abi/NFT.json"; // Chemin vers votre fichier ABI JSON
+import { useAccount, useWriteContract } from "wagmi";
+import { useReadNftContractIsAddressStored, useWriteNftContractStoreUserAddress } from "../../hook/WagmiGenerated";
+
 type IPicker = {
   updateJSONColor: (color: string) => void;
 };
 
 export function PickerExample(props: IPicker) {
 
-  const {isConnected} = useAccount()
+  const { writeContract } = useWriteContract();
+
+  const { address: addressUser, isConnected } = useAccount();
+  const nftAddress = process.env.VITE_NFT_ADDRESS;
 
   useEffect(() => {
-    console.log(isConnected)
+    console.log(isConnected, addressUser);
   }, []);
+
+  const isStoredAbi = useReadNftContractIsAddressStored({
+    args: [addressUser],
+  });
+  const { data: isStored } = isStoredAbi;
+
+  const handleStoreAddress = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const tx = await writeContract({
+      abi: nftAbi,
+      address: nftAddress,
+      functionName: "storeUserAddress",
+      args: [],
+    });
+  };
+
 
   // const provider = useEthersProvider(chainid ? { chainId: parseInt(chainid) } : {});
 

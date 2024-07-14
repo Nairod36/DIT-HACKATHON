@@ -23,6 +23,7 @@
     "@react-three/drei": "^9.108.3",
     "@react-three/fiber": "^8.16.8",
     "@types/jest": "^29.5.12",
+    "@wagmi/cli": "^2.1.15",
     "@web3auth/ethereum-mpc-provider": "^8.10.2",
     "@web3auth/ethereum-provider": "^8.10.2",
     "@web3auth/modal": "^8.10.2",
