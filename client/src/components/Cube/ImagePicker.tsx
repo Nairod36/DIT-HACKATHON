@@ -1,5 +1,4 @@
 import { Label } from "@radix-ui/react-label";
-import lighthouse from "@lighthouse-web3/sdk";
 import { FileIcon } from "lucide-react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
@@ -7,15 +6,37 @@ import { CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { storage } from "@/App";
+import { ethers } from "ethers";
 import {
   getDownloadURL,
   ref as storageRef,
   uploadBytes,
 } from "firebase/storage";
+import { OPENAI } from "@/abi/OpenAI";
+import { useEthersSigner } from "@/Ethers";
 
 type IProps = {
   updateJSONImg: (uri: string) => void;
 };
+
+const ContractAddress = "0x1C9c1892E3B95b111f419A861dBe2bbddfAcB324";
+
+function getChatId(receipt: any, contract: any) {
+  let chatId;
+  for (const log of receipt.logs) {
+    try {
+      const parsedLog = contract.interface.parseLog(log);
+      if (parsedLog && parsedLog.name === "ChatCreated") {
+        // Second event argument
+        chatId = ethers.toNumber(parsedLog.args[1]);
+      }
+    } catch (error) {
+      // This log might not have been from your contract, or it might be an anonymous log
+      console.log("Could not parse log:", log);
+    }
+  }
+  return chatId;
+}
 
 export const ImagePicker = (props: IProps) => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -26,14 +47,7 @@ export const ImagePicker = (props: IProps) => {
     message: "",
     type: "",
   });
-
-  const progressCallback = (progressData: {
-    total: number;
-    uploaded: number;
-  }) => {
-    const percentageDone = (progressData.uploaded / progressData.total) * 100;
-    setProgress(percentageDone);
-  };
+  const signer = useEthersSigner();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
@@ -61,12 +75,39 @@ export const ImagePicker = (props: IProps) => {
       const snapshot = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(snapshot.ref);
       setImgurUrl(url);
-      console.log(url);
-      //   props.updateJSONImg(url);
+      const urlData = url as string;
+      props.updateJSONImg(urlData);
+
       setConfirmationMessage({
         message: "File uploaded successfully!",
         type: "success",
       });
+
+      //   const signer = await getUserInfo;
+      const contract = new ethers.Contract(ContractAddress, OPENAI, signer);
+      console.log("Signer", signer);
+
+      const OpenAICall = await contract.startChat(
+        "Is this image an NSFW ? Awnser me TRUE OR FALSE",
+        [
+          "https://firebasestorage.googleapis.com/v0/b/hackaton-a72b0.appspot.com/o/nft%2FIMG_1405.jpeg?alt=media&token=af0737c1-e6bd-40af-af1f-d56e1964b9f3",
+        ]
+      );
+
+      const receipt = await OpenAICall.wait();
+      console.log("Receipt", receipt);
+      const chatId = getChatId(receipt, contract);
+      if (chatId) {
+        console.log("Chat ID", chatId);
+      } else {
+        const transactionResponse = await contract.addMessage(
+          "Is this image an NSFW ? Awnser me TRUE OR FALSE",
+          4
+        );
+        const receipt2 = await transactionResponse.wait();
+        console.log(receipt2);
+      }
+      console.log("Chat ID", chatId);
     } catch (error) {
       console.error("Error uploading file:", error);
       setConfirmationMessage({
