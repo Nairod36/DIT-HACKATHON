@@ -3,7 +3,7 @@ import { ProductComponent } from "@/components/ProductComponent";
 import RowCards from "@/components/RowCards";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Product } from "@/types/product.type";
+import { Product } from "@/type/product.type";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { Suspense } from "react";
@@ -20,7 +20,7 @@ export function Home() {
 
   return (
     <>
-      <section className="flex flex-col md:flex-row items-center justify-center h-auto mt-6 bg-dark">
+      <section className="flex flex-col md:flex-row items-center justify-center h-auto bg-dark">
         <div className="py-16 w-full md:w-1/2 lg:py-8 my-24 px-12">
           <h1 className="text-6xl font-bold tracking-tighter sm:text-6xl xl:text-8xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
             Unleash Creativity in the NFT Space

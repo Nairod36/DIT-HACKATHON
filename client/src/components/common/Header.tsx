@@ -104,7 +104,7 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
   };
 
   return (
-    <header className="">
+    <header>
       <div className="flex py-3 w-full shrink-0 items-center px-6 mx-auto ">
         <Link className="flex" to="/">
           <h1 className="text-xl font-medium tracking-tighter sm:text-2xl xl:text-2xl/none pt-1">
@@ -140,9 +140,6 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
         <div className="ml-auto flex items-center">
           {isLoggedIn ? (
             <div className="flex items-center">
-              <button onClick={getAccounts} className="card">
-                Get Accounts
-              </button>
               <Button onClick={logout} className="card">
                 Logout
               </Button>
