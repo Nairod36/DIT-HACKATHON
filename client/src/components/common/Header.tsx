@@ -5,16 +5,17 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import { Button } from "../ui/button";
+import Profile from "../Profil";
 
 const clientId =
   "BCYyxrXqr9GijhnPonyf1loJ48c-IjMDzZtXskSrrrDmTJJ9shzpz32X8d0InuMc4CXkbYKeyR9tNCvuukcQ0-0"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  chainId: "1137724820",
+  rpcTarget: "https://bunnyvivid-rpc.eu-north-2.gateway.fm/",
   displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
+  // blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
@@ -138,7 +139,7 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
           </a>
         </nav>
         <div className="ml-auto flex items-center">
-          {isLoggedIn ? (
+          {/* {isLoggedIn ? (
             <div className="flex items-center">
               <Button onClick={logout} className="card">
                 Logout
@@ -148,7 +149,8 @@ export function Header({ setIsLoggedIn, isLoggedIn }: HeaderProps) {
             <Button onClick={login} className="card">
               Login
             </Button>
-          )}
+          )} */}
+          <Profile/>
         </div>
       </div>
     </header>

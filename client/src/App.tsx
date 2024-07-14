@@ -21,6 +21,12 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { Web3AuthProvider } from "@web3auth/modal-react-hooks";
+import { web3AuthContextConfig } from "./config/web3AuthProviderProps";
+import { createConfig, http, WagmiProvider } from "wagmi";
+import { mainnet, sepolia, polygon } from "wagmi/chains";
+import { walletConnect, coinbaseWallet } from "wagmi/connectors";
+import Web3AuthConnectorInstance from "./components/Web3AuthConnectorInstance";
 
 const queryClient = new QueryClient();
 
@@ -45,11 +51,30 @@ export const signUp = (email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
+// Set up client
+const config = createConfig({
+  chains: [mainnet, sepolia, polygon],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+  },
+  connectors: [
+    walletConnect({
+      projectId: "3314f39613059cb687432d249f1658d2",
+      showQrModal: true,
+    }),
+    coinbaseWallet({ appName: 'wagmi' }),
+    Web3AuthConnectorInstance([mainnet, sepolia, polygon]),
+  ],
+});
+
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={config}>
       <Router>
         <div className="App h-screen w-screen">
           <Header setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
@@ -59,7 +84,7 @@ const App: React.FC = () => {
               <Route
                 path="/upload"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <ProtectedRoute>
                     <UploadFile />
                   </ProtectedRoute>
                 }
@@ -67,7 +92,7 @@ const App: React.FC = () => {
               <Route
                 path="/product/:id"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <ProtectedRoute>
                     <NFTDetails />
                   </ProtectedRoute>
                 }
@@ -75,7 +100,7 @@ const App: React.FC = () => {
               <Route
                 path="/market"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <ProtectedRoute>
                     <Market />
                   </ProtectedRoute>
                 }
@@ -83,16 +108,16 @@ const App: React.FC = () => {
               <Route
                 path="/cube"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
-                    <CubeEdition />
+                  <ProtectedRoute>
+                    <CubeEdition id={1} />
                   </ProtectedRoute>
                 }
               />
               <Route
                 path="/cube/:id"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
-                    <CubeEdition />
+                  <ProtectedRoute>
+                    <CubeEdition id={0}/>
                   </ProtectedRoute>
                 }
               />
@@ -101,6 +126,7 @@ const App: React.FC = () => {
           </main>
         </div>
       </Router>
+      </WagmiProvider>
     </QueryClientProvider>
   );
 };

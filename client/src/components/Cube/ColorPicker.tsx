@@ -1,5 +1,5 @@
 import { Paintbrush } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
@@ -7,51 +7,87 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import VerifyComponent from "./Verify";
+import nftAbi from "../../abi/NFT"; // Chemin vers votre fichier ABI JSON
+import { useAccount, useWriteContract } from "wagmi";
+import { useReadNftContractIsAddressStored } from "../../hook/WagmiGenerated";
 
 type IPicker = {
-  updateJSONColor:(color:string)=>void
-}
+  updateJSONColor: (color: string) => void;
+};
 
 export function PickerExample(props: IPicker) {
+
+  const { writeContract } = useWriteContract();
+
+  const { address: addressUser, isConnected } = useAccount();
+  const nftAddress = process.env.VITE_NFT_ADDRESS;
+
+  useEffect(() => {
+    console.log(isConnected, addressUser);
+  }, []);
+
+  const isStoredAbi = useReadNftContractIsAddressStored({
+    args: [addressUser as `0x${string}`],
+  });
+  const { data: isStored } = isStoredAbi;
+
+  const handleStoreAddress = async (addressUser: string | `0x${string}`) => {
+    const tx = await writeContract({
+      abi: nftAbi,
+      address: nftAddress as `0x${string}`,
+      functionName: "storeUserAddress",
+      args: [addressUser as `0x${string}`],
+    });
+  };
+
   const [background, setBackground] = useState(
     "linear-gradient(to bottom right,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)"
   );
 
   const [verification, setVerification] = useState(true);
 
-  const handlePickColor = () => {
-    props.updateJSONColor(background);
-    setVerification(false);
+  const handlePickColor = async () => {
+    try {
+      if (isStored) {
+        setVerification(false);
+        return;
+      }
+      props.updateJSONColor(background);
+      handleStoreAddress(addressUser as `0x${string}`);
+      setVerification(false);
+    } catch (error) {
+      console.error("Error storing address:", error);
+    }
   };
 
   const resetVerification = () => {
     setVerification(false);
-  }
+  };
 
   return (
     <>
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <div
-            className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
-            style={{ background }}
-          >
-            <GradientPicker
-              background={background}
-              setBackground={setBackground}
-            />
-          </div>
-        </CardContent>
-        <CardFooter>
-          {verification ? (
-            <VerifyComponent resetVerification={resetVerification} />
-          ) : (
-            <Button onClick={handlePickColor} className="w-full" size="lg">
-              Validate
-            </Button>
-          )}
-        </CardFooter>
-      </Card>
+        <Card>
+          <CardContent className="p-6 space-y-4">
+            <div
+              className="preview flex h-full min-h-[350px] w-full items-center justify-center rounded !bg-cover !bg-center p-10 transition-all"
+              style={{ background }}
+            >
+              <GradientPicker
+                background={background}
+                setBackground={setBackground}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            {verification ? (
+              <VerifyComponent resetVerification={resetVerification} />
+            ) : (
+              <Button onClick={handlePickColor} className="w-full" size="lg">
+                Validate
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
     </>
   );
 }
