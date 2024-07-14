@@ -1,14 +1,16 @@
 // src/components/ProtectedRoute.tsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 interface ProtectedRouteProps {
-  isLoggedIn: boolean;
   children: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isLoggedIn, children }) => {
-  if (!isLoggedIn) {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+
+  const {isConnected} = useAccount()
+  if (!isConnected) {
     return <Navigate to="/" replace />;
   }
 
