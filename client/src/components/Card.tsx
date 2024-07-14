@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
-function functionConvetMiliSecondsToTime(millisec: any) {
-  var seconds = (millisec / 1000).toFixed(0);
-  var minutes = (millisec / (1000 * 60)).toFixed(0);
-  var hours = (millisec / (1000 * 60 * 60)).toFixed(0);
-  var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(0);
+function functionConvetMiliSecondsToTime(millisec: number) {
+  const seconds = (millisec / 1000).toFixed(0);
+  const minutes = (millisec / (1000 * 60)).toFixed(0);
+  const hours = (millisec / (1000 * 60 * 60)).toFixed(0);
+  const days = (millisec / (1000 * 60 * 60 * 24)).toFixed(0);
 
   if (parseInt(seconds) < 60) {
     return seconds + " Sec";
@@ -19,7 +19,7 @@ function functionConvetMiliSecondsToTime(millisec: any) {
   }
 }
 
-function formatDateTime(dateTimeString: any) {
+function formatDateTime(dateTimeString: string | number | Date) {
   const dateTime = new Date(dateTimeString);
   const day = dateTime.getDate();
   const month = dateTime.getMonth() + 1;

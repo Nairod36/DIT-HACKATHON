@@ -1,5 +1,5 @@
 // src/components/UploadFileCard.tsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardHeader,
@@ -9,13 +9,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { UploadIcon } from "../../icons/Icons";
-import { Button } from "../ui/button";
 import clsx from "clsx";
 
 const UploadFileCard: React.FC = () => {
-
-  
-
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
